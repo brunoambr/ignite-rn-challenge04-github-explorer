@@ -36,23 +36,20 @@ export function Dashboard() {
 
   const { addRepository, repositories } = useRepositories();
 
-  function handleAddRepository() {
-    /**
-     * TODO: 
-     * - call addRepository function sending inputText value;
-     * - clean inputText value.
-     */
+  async function handleAddRepository() {
+    try {
+      await addRepository(inputText);
+      setInputText('');
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
 
   function handleRepositoryPageNavigation(id: number) {
-    /**
-     * TODO - navigate to the Repository screen sending repository id.
-     * Remember to use the correct prop name (repositoryId) to the repositoy id:
-     * 
-     * navigate(SCREEN NAME, {
-     *  repositoryId: id of the repository
-     * })
-     */
+    navigate('Repository', {
+      repositoryId: id
+    });
   }
 
   return (
@@ -66,11 +63,7 @@ export function Dashboard() {
               ref={inputRef}
               placeholder="Digite aqui 'usuário/repositório'"
               value={inputText}
-              /**
-               * TODO - update inputText value when input text value 
-               * changes:
-               * onChangeText={YOUR CODE HERE}
-               */
+              onChangeText={setInputText}
               onSubmitEditing={handleAddRepository}
               returnKeyType="send"
               autoCapitalize='none'
@@ -80,11 +73,7 @@ export function Dashboard() {
             <InputButton
               testID="input-button"
               onPress={handleAddRepository}
-              /**
-               * TODO - ensure to disable button when inputText is 
-               * empty (use disabled prop to this):
-               * disabled={CONDITION HERE}
-               */
+              disabled={!inputText.length}
             >
               <Icon name="search" size={20} />
             </InputButton>
